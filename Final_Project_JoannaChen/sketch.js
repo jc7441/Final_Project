@@ -6,18 +6,21 @@ var back;
 var lastDays;
 var value;
 var lato;
+var alle;
 var track;
 var fam;
 var home;
+var flag;
 var x1, x2, x3, y1, y2, y3;
 var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p;
 
 function preload() {
   elephant = loadImage("data/elephant.png");
   elephant2 = loadImage("data/elephant2.png");
-  tradeMap = loadImage("data/map2.png");
+  tradeMap = loadImage("data/map3.png");
   back = loadImage("data/back.png");
   lato = loadFont("data/Lato.ttf");
+  alle = loadFont("data/AllertaStencil.ttf");
   track = loadSound("data/time.mp3");
   fam = loadImage("data/fam.png");
   home = loadImage("data/home.png");
@@ -49,16 +52,18 @@ function setup() {
   n = 15;
   o = 15;
   p = 15;
+  //lastDays = createVideo("data/lastdays.mp4");
+  flag = 0;
 }
 
 function draw() {
   //before main screen
-  if (frameCount < 500) {
+  if (frameCount < 100) {
     tearShed();
     scale(.7);
     image(home, 25, 475);
   }
-  if (frameCount > 500 || value === 0) { //if the frameCount is greter than 500 or user clicks back arrow
+  if (frameCount > 100 || value === 0) { //if the frameCount is greter than 500 or user clicks back arrow
     //main screen after tearshed
     //if (frameCount > 200) {
     background(200);
@@ -86,18 +91,40 @@ function draw() {
         x3 -= 3;
       }
     }
-    if (value == 1) { //video page
+    if (value == 1 && flag == 1) { //video page
       createCanvas(0, 0);
+      //background(0);
       track.pause();
       lastDays = createVideo("data/lastdays.mp4");
-      lastDays.size(600, 300);
+      lastDays.size(600, 500);
+      //lastDays.loop();
+      flag = 0;
       lastDays.loop();
     } else if (value == 2) { //map page
       background(200);
-      scale(.86);
-      image(tradeMap, 0, 0);
-      scale(.2);
-      image(back, 75, 4475);
+      textSize(70);
+      textFont(alle);
+      stroke(0);
+      strokeWeight(0);
+      fill(0);
+      text("TOP 10 IVORY MARKETS", 20, 110);
+      scale(1.1);
+      image(tradeMap, 0, 150);
+      fill(197, 27, 23);
+      stroke(197, 27, 23);
+      strokeWeight(1);
+      ellipse(175, 250, 10, 10); //usa
+      ellipse(627, 280, 10, 10); //china/hong kong
+      ellipse(600, 307, 10, 10); //thailand
+      ellipse(442, 283, 10, 10); //egypt
+      ellipse(399, 227, 10, 10); //germany
+      ellipse(390, 328, 10, 10); //nigeria
+      ellipse(440, 400, 10, 10); //zimbabwe
+      ellipse(442, 310, 10, 10); //sudan
+      ellipse(462, 326, 10, 10); //ethiopia
+      ellipse(664, 255, 10, 10); //japan
+      scale(.17);
+      image(back, 75, 4098);
     } else if (value == 3) { //timeline page
       background(200);
       stroke(0);
@@ -169,7 +196,7 @@ function draw() {
         stroke(0);
         strokeWeight(1);
         fill(0);
-        text("1977: The African elephant is listed on CITES. International trade for commercial \npurposes continues; the international African ivory trade is regulated by CITES.", 25, 50);
+        text("1977: The African elephant is listed on CITES. International trade for commercial purposes \ncontinues; the international African ivory trade is regulated by CITES.", 25, 50);
       } else if ((mouseX > 240) && (mouseX < 251) && (mouseY > 276) && (mouseY < 288)) { //1978
         g = 30;
         textSize(20);
@@ -277,6 +304,8 @@ function draw() {
       image(back, 74, 4000); //back arrow
       scale(2.6);
       image(fam, 700, 1200);
+    } else if (value == 4) {
+      background(200);
     }
   }
 } //draw closer
@@ -299,6 +328,7 @@ function mousePressed() {
   console.log("y: " + mouseY);
   if ((mouseX > 89) && (mouseX < 233) && (mouseY > 142) && (mouseY < 247)) { //1
     value = 1;
+    flag = 1;
   } else if ((mouseX > 370) && (mouseX < 506) && (mouseY > 142) && (mouseY < 247)) { //2
     value = 2;
   } else if ((mouseX > 232) && (mouseX < 364) && (mouseY > 358) && (457)) { //3
