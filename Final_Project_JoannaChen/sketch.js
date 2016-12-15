@@ -1,4 +1,6 @@
 var shed = [];
+var fire = [];
+var smoking = [];
 var elephant;
 var elephant2;
 var tradeMap;
@@ -6,13 +8,28 @@ var back;
 var lastDays;
 var value;
 var lato;
-var alle;
-var track;
+var hatchet;
+var gun;
+var goggles;
+var gps;
+var marker;
+var marc;
+//var track;
+var roar;
+var pile;
+var crackling;
 var fam;
-var home;
+var prelude;
 var flag;
 var x1, x2, x3, y1, y2, y3;
 var a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p;
+var s;
+var ypile;
+var xpos, ypos;
+var ax, ay, bx, by, cx, cy, dx, dy;
+var fx;
+var truck;
+var truckX;
 
 function preload() {
   elephant = loadImage("data/elephant.png");
@@ -20,16 +37,29 @@ function preload() {
   tradeMap = loadImage("data/map3.png");
   back = loadImage("data/back.png");
   lato = loadFont("data/Lato.ttf");
-  alle = loadFont("data/AllertaStencil.ttf");
-  track = loadSound("data/time.mp3");
+  marker = loadFont("data/PermanentMarker.ttf");
+  marc = loadFont("data/MarcellusSC.ttf");
+  //track = loadSound("data/time.mp3");
+  roar = loadSound("data/sound.mp3");
+  //loadGun = loadSound("data/gun.m4a");
+  crackling = loadSound("data/fire.m4a");
   fam = loadImage("data/fam.png");
-  home = loadImage("data/home.png");
+  prelude = loadImage("data/home.png");
+  pile = loadImage("data/pile.png");
+  gun = loadImage("data/ak47.png");
+  hatchet = loadImage("data/hatchet.png");
+  goggles = loadImage("data/goggles.png");
+  gps = loadImage("data/gps.png");
+  truck = loadImage("data/truck.png");
+
 }
 
 function setup() {
   createCanvas(600, 600);
   //track.play();
-  track.loop();
+  //track.loop();
+  //in kenya, there was a burning of 105 tons of ivory taken from poaches
+  crackling.loop();
   x1 = 100;
   y1 = 200;
   x2 = 500;
@@ -54,56 +84,157 @@ function setup() {
   p = 15;
   //lastDays = createVideo("data/lastdays.mp4");
   flag = 0;
+  s = 0;
+  ypile = 175;
+  xpos = 570;
+  ypos = 397;
+  ax = 250;
+  ay = 250;
+  bx = 480;
+  by = 388;
+  cx = 200;
+  cy = 200;
+  dx = 603;
+  dy = 181;
+  fx = 700;
+  truckX = -385;
 }
 
 function draw() {
   //before main screen
-  if (frameCount < 100) {
+  if (frameCount < 300) {
     tearShed();
     scale(.7);
-    image(home, 25, 475);
+    image(prelude, 25, 475);
   }
-  if (frameCount > 100 || value === 0) { //if the frameCount is greter than 500 or user clicks back arrow
+  if (frameCount > 300 || value === 0) { //if the frameCount is greater than 300 or user clicks back arrow
     //main screen after tearshed
-    //if (frameCount > 200) {
-    background(200);
+    background(227 - s, 73 - s, 27 - s); //resembles fire
+    fireAshes();
+    //scale(.7);
+    image(pile, 15, ypile, xpos, ypos);
+    burning();
     scale(.7);
     image(elephant, x1, y1); //1
     image(elephant, x2, y2); //2
     image(elephant, x3, y3); //3
+    s = random(0, 100);
     //if mouse is over elephant, then the elephant will vibrate
     if ((mouseX > 89) && (mouseX < 233) && (mouseY > 142) && (mouseY < 247)) { //1
       if (frameCount % 2 === 0) {
         x1 += 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       } else if (frameCount % 2 == 1) {
         x1 -= 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       }
     } else if ((mouseX > 370) && (mouseX < 506) && (mouseY > 142) && (mouseY < 247)) { //2
       if (frameCount % 2 === 0) {
         x2 += 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       } else if (frameCount % 2 == 1) {
         x2 -= 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       }
     } else if ((mouseX > 232) && (mouseX < 364) && (mouseY > 358) && (457)) { //3
       if (frameCount % 2 === 0) {
         x3 += 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       } else if (frameCount % 2 == 1) {
         x3 -= 3;
+        //burning ivory
+        ypos -= .2;
+        ypile += .2;
       }
     }
-    if (value == 1 && flag == 1) { //video page
-      createCanvas(0, 0);
-      //background(0);
-      track.pause();
-      lastDays = createVideo("data/lastdays.mp4");
-      lastDays.size(600, 500);
-      //lastDays.loop();
-      flag = 0;
-      lastDays.loop();
-    } else if (value == 2) { //map page
+    if (value == 1) {
+      crackling.pause();
       background(200);
-      textSize(70);
-      textFont(alle);
+      textSize(73);
+      textFont(marker);
+      stroke(0);
+      strokeWeight(0);
+      fill(0);
+      text("HOW POACHERS KILL", 24, 110);
+      image(goggles, 50, 150, ax, ay);
+      image(gun, 200, 650, dx, dy);
+      image(hatchet, 350, 200, bx, by);
+      image(gps, 150, 450, cx, cy);
+      if ((mouseX > 36) && (mouseX < 210) && (mouseY > 125) && (mouseY < 254)) { //goggles
+        ax = 275;
+        ay = 275;
+        textSize(35);
+        textFont(lato);
+        stroke(0);
+        strokeWeight(1);
+        fill(0);
+        text("Night Vision", 300, 200);
+      } else if ((mouseX > 249) && (mouseX < 578) && (mouseY > 144) && (mouseY < 410)) { //hatchet
+        bx = 505;
+        by = 413;
+        textSize(35);
+        textFont(lato);
+        stroke(0);
+        strokeWeight(1);
+        fill(0);
+        text("Hatchet", 600, 300);
+      } else if ((mouseX > 114) && (mouseX < 230) && (mouseY > 321) && (mouseY < 445)) { //gps
+        cx = 225;
+        cy = 225;
+        textSize(35);
+        textFont(lato);
+        stroke(0);
+        strokeWeight(1);
+        fill(0);
+        text("GPS", 365, 500);
+      } else if ((mouseX > 145) && (mouseX < 552) && (mouseY > 466) && (mouseY < 582)) { //gun
+        dx = 628;
+        dy = 206;
+        textSize(35);
+        textFont(lato);
+        stroke(0);
+        strokeWeight(1);
+        fill(0);
+        text("AK-47", 570, 775);
+      } else {
+        ax = 250;
+        ay = 250;
+        bx = 480;
+        by = 388;
+        cx = 200;
+        cy = 200;
+        dx = 603;
+        dy = 181;
+      }
+      scale(.19);
+      image(back, 75, 4000);
+      /*
+      if (value == 1 && flag == 1) { //video page
+        createCanvas(0, 0);
+        scale(.8);
+        image(back, 0, 0);
+        //track.pause();
+        crackling.stop();
+        lastDays = createVideo("data/lastdays.mp4");
+        lastDays.size(600, 400);
+        lastDays.play();
+        flag = 0;
+        */
+    } else if (value == 2) { //map page
+      crackling.pause();
+      background(200);
+      textSize(68);
+      textFont(marker);
       stroke(0);
       strokeWeight(0);
       fill(0);
@@ -123,15 +254,103 @@ function draw() {
       ellipse(442, 310, 10, 10); //sudan
       ellipse(462, 326, 10, 10); //ethiopia
       ellipse(664, 255, 10, 10); //japan
+      if ((mouseX > 131) && (mouseX < 139) && (mouseY > 189) && (mouseY < 197)) { //usa
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(180, 215, 53, 30);
+        fill(0);
+        text("2. USA", 185, 237);
+      } else if ((mouseX > 479) && (mouseX < 488) && (mouseY > 213) && (mouseY < 221)) { //china/hong kong
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(475, 253, 145, 30);
+        fill(0);
+        text("1. China/Hong Kong", 478, 274);
+      } else if ((mouseX > 457) && (mouseX < 467) && (mouseY > 234) && (mouseY < 242)) { //thailand
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(507, 306, 86, 30);
+        fill(0);
+        text("3. Thailand", 512, 328);
+      } else if ((mouseX > 337) && (mouseX < 345) && (mouseY > 216) && (mouseY < 223)) { //egypt
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(367, 250, 70, 30);
+        fill(0);
+        text("4. Egypt", 372, 270);
+      } else if ((mouseX > 303) && (mouseX < 311) && (mouseY > 172) && (mouseY < 179)) { //germany
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(405, 195, 90, 30);
+        fill(0);
+        text("5. Germany", 410, 215);
+      } else if ((mouseX > 296) && (mouseX < 304) && (mouseY > 250) && (mouseY < 258)) { //nigeria
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(395, 294, 78, 30);
+        fill(0);
+        text("6. Nigeria", 400, 315);
+      } else if ((mouseX > 335) && (mouseX < 343) && (mouseY > 305) && (mouseY < 314)) { //zimbabwe
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(446, 400, 89, 30);
+        fill(0);
+        text("7. Zimbabwe", 450, 420);
+      } else if ((mouseX > 336) && (mouseX < 345) && (mouseY > 236) && (mouseY < 244)) { //sudan
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(449, 280, 70, 30);
+        fill(0);
+        text("8. Sudan", 455, 300);
+      } else if ((mouseX > 351) && (mouseX < 360) && (mouseY > 245) && (mouseY < 256)) { //ethiopia
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(467, 294, 85, 30);
+        fill(0);
+        text("9. Ethiopia", 473, 314);
+      } else if ((mouseX > 507) && (mouseX < 516) && (mouseY > 194) && (mouseY < 202)) { //japan
+        textSize(15);
+        textFont(marc);
+        fill(255);
+        stroke(255);
+        rect(670, 220, 75, 30);
+        fill(0);
+        text("10. Japan", 677, 241);
+      }
+      //truck carrying ivory
+      image(truck, truckX, 550, 384, 114);
+      if (truckX < 880) {
+        truckX +=2;
+      } else {
+        truckX = -385;
+      }
       scale(.17);
       image(back, 75, 4098);
     } else if (value == 3) { //timeline page
       background(200);
+      crackling.pause();
       stroke(0);
       strokeWeight(2);
       line(50, 400, 800, 400); //timeline
       fill(178, 31, 26, 200);
-      //ellipse(50, 400, 15, 15); //1500s
       ellipse(50, 400, a, a); //1500s
       ellipse(100, 400, b, b); //1800s
       ellipse(150, 400, c, c); //1913
@@ -303,7 +522,14 @@ function draw() {
       scale(.19);
       image(back, 74, 4000); //back arrow
       scale(2.6);
-      image(fam, 700, 1200);
+      image(fam, fx, 1200);
+      if ((mouseX > 243) && (mouseX < 573) && (mouseY > 420) && (mouseY < 590)) {
+        if (frameCount % 2 === 0) {
+          fx += 7;
+        } else if (frameCount % 2 == 1) {
+          fx -= 7;
+        }
+      }
     } else if (value == 4) {
       background(200);
     }
@@ -322,18 +548,57 @@ function tearShed() {
   }
 }
 
+//ash flakes from the fire
+function fireAshes() {
+  for (var v = 0; v < 1; v++) {
+    var flake = new Ashes((random(0, width)), (random(0, height)));
+    fire.push(flake);
+  }
+  for (v = 0; v < fire.length; v++) {
+    fire[v].display();
+  }
+}
+
+//burning ivory smoke
+function burning() {
+  for (var z = 0; z < 1; z++) {
+    var xx = new Smoke(createVector((random(100, 420)), (random(200, 500)))); //smoke rising above
+    smoking.push(xx);
+  }
+  for (z = 0; z < smoking.length; z++) {
+    smoking[z].run();
+  }
+}
+
 //when the mouse is pressed on the image, then it will lead to another page
 function mousePressed() {
-  console.log("x: " + mouseX);
-  console.log("y: " + mouseY);
+  //console.log("x: " + mouseX);
+  //console.log("y: " + mouseY);
   if ((mouseX > 89) && (mouseX < 233) && (mouseY > 142) && (mouseY < 247)) { //1
+    roar.play();
     value = 1;
-    flag = 1;
+    //flag = 1;
   } else if ((mouseX > 370) && (mouseX < 506) && (mouseY > 142) && (mouseY < 247)) { //2
+    roar.play();
     value = 2;
-  } else if ((mouseX > 232) && (mouseX < 364) && (mouseY > 358) && (457)) { //3
+    //crackling.loop();
+  } else if ((mouseX > 231) && (mouseX < 364) && (mouseY > 358) && (457)) { //3
+    roar.play();
     value = 3;
+    //crackling.loop();
+    if ((mouseX > 243) && (mouseX < 573) && (mouseY > 420) && (mouseY < 590)) { //video
+      createCanvas(0, 0);
+      crackling.stop();
+      lastDays = createVideo("data/lastdays.mp4");
+      lastDays.size(600, 500);
+      lastDays.play();
+    }
   } else if ((mouseX > 9) && (mouseX < 71) && (mouseY > 548) && (mouseY < 589)) { //back arrow
     value = 0;
+    s = 0;
+    fire.length = 0;
+    crackling.loop();
+    smoking.length = 0;
+    ypile = 210;
   }
 }
